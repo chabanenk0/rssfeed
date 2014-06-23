@@ -9,12 +9,27 @@
 require "config.php";
 require "NewsRecord.php";
 
+if (array_key_exists('offset', $_REQUEST)) {
+    $offset = (int) $_REQUEST['offset'];
+} else {
+    $offset = 0;
+}
+$limit =  $paginationLimit;
+
 $pdoString = 'mysql:host='.$mysqlServer.';dbname='.$mysqlDatabaseName.';charset=utf8';
 $db = new PDO($pdoString, $mysqlUser, $mysqlPass);
 
-$r = $db->query('select * from news');
-//echo "<table border=1>";
-//echo "<tr>\n<th>title</th><th>description</th><th>source</th><th>pubdate</th></tr>";
+$r = $db->query('select id from news');
+
+$numberOfRecords = $r->rowCount();
+
+$stmt = $db->prepare('select * from news limit :limit offset :offset');
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$r = $stmt->fetchAll();
+
+
 
 $recordsArray=array();
 

@@ -6,6 +6,11 @@
 </head>
 <body>
 <h1>Список свежеспарсенных новостей</h1>
+<?php
+    for ($i = 0; $i <$numberOfRecords; $i = $i + $limit) {
+        echo "<a href='list.php?offset=$i>$i</a>\n";
+    }
+?>
 <table border="1">
     <tr>
     <th>Заголовок</th>
