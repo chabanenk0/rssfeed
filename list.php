@@ -8,19 +8,17 @@
 
 require "config.php";
 
-mysql_connect($mysqlServer, $mysqlUser, $mysqlPass);
-mysql_query('use '.$mysqlDatabaseName);
+$pdoString = 'mysql:host='.$mysqlServer.';dbname='.$mysqlDatabaseName.';charset=utf8';
+$db = new PDO($pdoString, $mysqlUser, $mysqlPass);
 
-$r = mysql_query('select * from news');
-$n = mysql_num_rows($r);
+$r = $db->query('select * from news');
 echo "<table border=1>";
 echo "<tr>\n<th>title</th><th>description</th><th>source</th><th>pubdate</th></tr>";
-for($i = 0; $i < $n; $i++) {
-    $f = mysql_fetch_array($r);
-    $title = $f['title'];
-    $description = $f['description'];
-    $source = $f['source'];
-    $pubdate = $f['pubdate'];
+foreach ($r as $row) {
+    $title = $row['title'];
+    $description = $row['description'];
+    $source = $row['source'];
+    $pubdate = $row['pubdate'];
     echo "<tr>\n";
     echo "<td>$title</td>\n";
     echo "<td>$description</td>\n";
