@@ -17,7 +17,7 @@
         echo '&lt;--Туда ';
     }
 
-    if ($pageNumber < $maxPossiblePage) {
+    if ($pageNumber < $maxPossiblePage - 1) {
         echo '<a href=list.php?page='. ($pageNumber+2) .'>Сюда--&gt;</a> ';
     } else {
         echo 'Сюда--&gt; ';

@@ -39,7 +39,7 @@ foreach ($r as $row) {
     $record = new NewsRecord();
     $record->setTitle($row['title']);
     $record->setDescription($row['description']);
-    $record->setSource($row['source']);
+    $record->setSource($row['source_id']);
     $record->setPubdate($row['pubdate']);
     array_push($recordsArray, $record);
 }

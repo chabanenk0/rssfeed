@@ -5,7 +5,7 @@ $db = new PDO($pdoString, $mysqlUser, $mysqlPass);
 $db->query('create table news(id int not null auto_increment primary key,
                   title varchar (200),
                   description varchar (200),
-                  source int,
+                  source_id int,
                   pubdate DATETIME,
                   hash char (100));');
 echo "<br>Creating table news:".mysql_error();

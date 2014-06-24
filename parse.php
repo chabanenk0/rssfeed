@@ -47,7 +47,7 @@ foreach ($r as $row) {
         $r2 = $db->query("select id from news where hash='$hash'");
 
         if ($r2->rowCount() == 0) { //url is new
-            $q = "insert into news (title, description, source, pubdate, hash)
+            $q = "insert into news (title, description, source_id, pubdate, hash)
                   values (:title, :description, :source, :pubDateForDB, :hash)";
             //values ('$title', '$description', $source, '$pubDateForDB', '$hash')";
             //echo "<p>query=$q</p>";
@@ -56,7 +56,7 @@ foreach ($r as $row) {
                 $res = $stmt->execute(array(
                     ':title' => $title,
                     ':description' => $description,
-                    ':source' => $source,
+                    ':source_id' => $source,
                     ':pubDateForDB' => $pubDateForDB,
                     ':hash' => $hash));
             }
