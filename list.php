@@ -6,8 +6,10 @@
  * Time: 5:05 PM
  */
 
-require "config.php";
-require "NewsRecord.php";
+require_once "config.php";
+require_once "NewsRecord.php";
+
+
 
 if (array_key_exists('page', $_REQUEST)) {
     $pageNumber = (int) $_REQUEST['page']-1;
@@ -21,11 +23,11 @@ $offset = $pageNumber*$limit;
 $pdoString = 'mysql:host='.$mysqlServer.';dbname='.$mysqlDatabaseName.';charset=utf8';
 $db = new PDO($pdoString, $mysqlUser, $mysqlPass);
 
-$r = $db->query('select id from news');
+$r = $db->query('select id from news'.$where);
 
 $numberOfRecords = $r->rowCount();
 
-$stmt = $db->prepare('select * from news limit :limit offset :offset');
+$stmt = $db->prepare('select * from news '.$where.' limit :limit offset :offset');
 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
@@ -37,6 +39,7 @@ $recordsArray=array();
 
 foreach ($r as $row) {
     $record = new NewsRecord();
+    $record->setId($row['id']);
     $record->setTitle($row['title']);
     $record->setDescription($row['description']);
     $record->setSource($row['source_id']);
@@ -56,4 +59,8 @@ if ($pageNumber > $maxPossiblePage - 3) {
     $minPageNumber = max($maxPossiblePage - 4, 1);
 }
 
-include "list_template.php";
+if (!isset($outputTemplate)) {
+    $outputTemplate = 'list_template.php';
+}
+
+include ($outputTemplate);

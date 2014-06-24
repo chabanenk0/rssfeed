@@ -23,34 +23,16 @@
         echo 'Сюда--&gt; ';
     }
 ?>
-<table border="1">
-    <tr>
-    <th>Заголовок</th>
-    <th>Текст</th>
-    <th>Источник</th>
-    <th>Дата</th>
-    </tr>
+<ul>
     <?php
         foreach ($recordsArray as $record) {
-            ?>
-
-            <tr>
-                <td>
-                    <?php echo $record->getTitle(); ?>
-                </td>
-                <td>
-                    <?php echo $record->getDescription(); ?>
-                </td>
-                <td>
-                    <?php echo $record->getSource(); ?>
-                </td>
-                <td>
-                    <?php echo $record->getPubdate(); ?>
-                </td>
-            </tr>
+    ?>
+    <li>
+        <?php echo $record->getId().'. <a href=\'item?id='.$record->getId().'\'>'.$record->getTitle().'</a>'; ?>
+    </li>
         <?php
         }
-    ?>
+        ?>
 </table>
 </body>
 </html>

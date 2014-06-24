@@ -8,6 +8,8 @@
 
 class NewsRecord {
 
+    protected $id;
+
     protected $title;
 
     protected $description;
@@ -15,6 +17,22 @@ class NewsRecord {
     protected $source;
 
     protected $pubdate;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return mixed

@@ -29,3 +29,9 @@ content - contains news text (long text field)
 source - number of the source feed (number of the line in feeds.txt, which corresponds to the source feed url of this news record.
 date - the news publishing date, is taken from the rss data
 
+Front controller url's:
+- index/update - parses new feeds
+- index/show/all - lists all parsed news
+- index/show/headers - lists only headers
+- index/show/item/5/ - shows only news record with #5
+- index/show/source/1/ - news list only from source #1
