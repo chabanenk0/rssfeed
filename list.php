@@ -9,12 +9,14 @@
 require "config.php";
 require "NewsRecord.php";
 
-if (array_key_exists('offset', $_REQUEST)) {
-    $offset = (int) $_REQUEST['offset'];
+if (array_key_exists('page', $_REQUEST)) {
+    $pageNumber = (int) $_REQUEST['page']-1;
 } else {
-    $offset = 0;
+    $pageNumber = 0;
 }
+
 $limit =  $paginationLimit;
+$offset = $pageNumber*$limit;
 
 $pdoString = 'mysql:host='.$mysqlServer.';dbname='.$mysqlDatabaseName.';charset=utf8';
 $db = new PDO($pdoString, $mysqlUser, $mysqlPass);
@@ -40,6 +42,18 @@ foreach ($r as $row) {
     $record->setSource($row['source']);
     $record->setPubdate($row['pubdate']);
     array_push($recordsArray, $record);
+}
+
+// calculating variables for pagination
+$maxPossiblePage = round($numberOfRecords/$paginationLimit);
+
+$minPageNumber =  max(1, $pageNumber - 1);
+$maxPageNumber =  min($maxPossiblePage, $pageNumber + 3);
+if ($pageNumber < 3) {
+    $maxPageNumber = min($maxPossiblePage, 5);
+}
+if ($pageNumber > $maxPossiblePage - 3) {
+    $minPageNumber = max($maxPossiblePage - 4, 1);
 }
 
 include "list_template.php";
