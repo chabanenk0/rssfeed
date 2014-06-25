@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitrychabanenko
- * Date: 6/25/14
- * Time: 4:20 PM
- */
 
 namespace Core;
-
 
 class FeedsDatabaseClient extends DatabaseClient
 {
@@ -34,5 +27,14 @@ class FeedsDatabaseClient extends DatabaseClient
         $query = 'insert into feeds (url) values (\'';
         $query = $query . implode('\',\'', $feedUrlsArray) . '\')';
         $this->db->query($query);
+    }
+
+    public function getFeedUrlById($id)
+    {
+        $r = $this->db->query('select url from feeds where id='.$id);
+        $r->Execute();
+        $urlExists = $r->fetchAll(\PDO::FETCH_COLUMN, 0);
+
+        return $urlExists[0];
     }
 }

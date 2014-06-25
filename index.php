@@ -11,19 +11,18 @@ use \Controller;
 
 $url = $_SERVER['REQUEST_URI'];
 
-//$routes = array (
-//    '/rssfeed/index/update'       => 'updateAction',
-//    '/rssfeed/index/show/all'     => 'showAllAction',
-//    '/rssfeed/index/show/headers' => 'showHeadersAction',
-//    '/rssfeed/index/show/item'   => 'showItemsAction',
-//    '/rssfeed/index/show/source'  => 'showItemsFromSourceAction',
-//    '/rssfeed/index'              => 'indexAction',
-//);
-
 list($controllerName,$actionName) = sscanf($url, '/rssfeed/index/%s/%s');
 $slugs = explode('/', $url);
-$controllerName = $slugs[3];
-$actionName = $slugs[4];
+if (array_key_exists(3,$slugs)){
+    $controllerName = $slugs[3];
+} else {
+    $controllerName='index';
+}
+if (array_key_exists(4,$slugs)){
+    $actionName = $slugs[4];
+} else {
+    $actionName='index';
+}
 $controllerName = ucfirst($controllerName);
 $controllerName = '\\Controller\\'.$controllerName.'Controller';
 $actionName = strtolower($actionName);
@@ -35,15 +34,5 @@ try {
     exit;
 }
 catch (Exception $e) {
-    echo "401 not found";
+    echo "404 not found";
 }
-//foreach ($routes as $urlRegexp=>$action) {
-//    if (strncmp($url, $urlRegexp, strlen($urlRegexp))==0) {
-//        $controller = new Controller();
-//        $controller = new $controllerName();
-//        $controller->$action($url);
-//        exit;
-//    }
-//}
-//if no matches found:
-

@@ -59,6 +59,7 @@ class NewsDatabaseClient extends DatabaseClient
     public function getNumberOfNewsRecords ($where)
     {
         $r = $this->db->query('select id from news'.$where);
+
         return $r->rowCount();
     }
 }

@@ -75,7 +75,6 @@ class ShowController
     public function showAction($url, $template)
     {
         $this->url = $url;
-        $this->where = '';
         $minPageNumber = $this->getMinPageNumber();
         $maxPageNumber = $this->getMaxPageNumber();
         $pageNumber = $this->getCurrentPageNumber();
@@ -98,14 +97,20 @@ class ShowController
         $this->showAction($url, "View/headers_template.php");
     }
 
-    public function showItemsAction()
+    public function showItemsAction($url)
     {
-        include "show_one.php";
+        $this->where = ' where id='.$_REQUEST['id'];
+        $recordsArray = $this->nc->getNewsRecords($this->where, 1, 0);
+        $record = $recordsArray[0];
+        $sourceId = $record->getSource();
+        $sourceName = $this->fc->getFeedUrlById($sourceId);
+
+        include "View/show_one_template.php";
     }
 
     public function showitemsfromsourceAction($url)
     {
-        list($source_id)=sscanf($url, '/rssfeed/index/Controller/showItemsFromSource/%d/');
+        list($source_id)=sscanf($url, '/rssfeed/index/show/showItemsFromSource/%d/');
         $this->where = ' where source_id='.$source_id;
         $this->showAction($url, "View/list_template.php");
     }

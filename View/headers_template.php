@@ -28,7 +28,7 @@
         foreach ($recordsArray as $record) {
     ?>
     <li>
-        <?php echo $record->getId().'. <a href=\'item?id='.$record->getId().'\'>'.$record->getTitle().'</a>'; ?>
+        <?php echo $record->getId().'. <a href=\'../showItems/?id='.$record->getId().'\'>'.$record->getTitle().'</a>'; ?>
     </li>
         <?php
         }
