@@ -5,21 +5,38 @@ require "config.php";
 $pdoString = 'mysql:host='.$mysqlServer.';dbname='.$mysqlDatabaseName.';charset=utf8';
 $db = new PDO($pdoString, $mysqlUser, $mysqlPass);
 
-$fp = fopen ('feeds.txt', 'r');
-if (!$fp) {
-    die('Unable to open feeds.txt');
-}
-while (!feof($fp)) {
-    $s = fgets($fp);
-    if (strlen($s)<1) continue;
-    $s = substr($s, 0, strlen($s)-1); //erase enter;
-    $r = $db->query("select id from feeds where url='$s'");
+$urlFileContents = file_get_contents('feeds.txt');
+$urlsArray = explode("\n", $urlFileContents);
+$r = $db->query("select url from feeds");
+$r->Execute();
+$urlExists = $r->fetchAll(PDO::FETCH_COLUMN, 0);
+$newUrls = array_diff($urlsArray, $urlExists);
 
-    if ($r->rowCount() == 0) { //url is new
-        $q = "insert into feeds (url) values ('$s')";
-        $db->query($q);
+if (count($newUrls)) {
+    $query = 'insert into feeds (url) values ';
+    foreach ($newUrls as $url) {
+        if (strlen($url)>0) $query = $query."('$url'),";
     }
+    $query = substr($query,0, strlen($query)-1);
+    $db->query($query);
 }
+
+//$fp = fopen ('feeds.txt', 'r');
+//if (!$fp) {
+//    die('Unable to open feeds.txt');
+//}
+//
+//while (!feof($fp)) {
+//    $s = fgets($fp);
+//    if (strlen($s)<1) continue;
+//    $s = substr($s, 0, strlen($s)-1); //erase enter;
+//    $r = $db->query("select id from feeds where url='$s'");
+//
+//    if ($r->rowCount() == 0) { //url is new
+//        $q = "insert into feeds (url) values ('$s')";
+//        $db->query($q);
+//    }
+//}
 
 echo "<p>updated feeds list</p>";
 // requesting url's
@@ -33,7 +50,6 @@ foreach ($r as $row) {
     $structdata = simplexml_load_file($url);
     $newsArray = $structdata->channel->item;
     for ($j = 0; $j< count($newsArray); $j++) {
-
         $title = $newsArray[$j]->title->__toString();
         $description = $newsArray[$j]->description->__toString();
         $pubDate = $newsArray[$j]->pubDate->__toString();
@@ -56,7 +72,7 @@ foreach ($r as $row) {
                 $res = $stmt->execute(array(
                     ':title' => $title,
                     ':description' => $description,
-                    ':source_id' => $source,
+                    ':source' => $source,
                     ':pubDateForDB' => $pubDateForDB,
                     ':hash' => $hash));
             }

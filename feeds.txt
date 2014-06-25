@@ -1,2 +1,3 @@
 http://rss.cnn.com/rss/edition.rss
 http://feeds.bbci.co.uk/news/rss.xml
+http://www.vesti.ru/vesti.rss
