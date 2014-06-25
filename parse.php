@@ -11,8 +11,12 @@ $r = $db->query("select url from feeds");
 $r->Execute();
 $urlExists = $r->fetchAll(PDO::FETCH_COLUMN, 0);
 $newUrls = array_diff($urlsArray, $urlExists);
+$newUrls = array_diff($newUrls, array(''));
 
 if (count($newUrls)) {
+    array_walk($newUrls, function(&$value, $key) {
+        $value = str_replace(' ','',$value);
+    });
     $query = 'insert into feeds (url) values (\'';
     $query = $query . implode('\',\'', $newUrls) . '\')';
     $db->query($query);
@@ -45,7 +49,6 @@ foreach ($r as $row) {
         if ($r2->rowCount() == 0) { //url is new
             $q = "insert into news (title, description, source_id, pubdate, hash)
                   values (:title, :description, :source, :pubDateForDB, :hash)";
-            //values ('$title', '$description', $source, '$pubDateForDB', '$hash')";
             //echo "<p>query=$q</p>";
             $stmt =  $db->prepare($q);
             try {
