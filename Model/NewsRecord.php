@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: dmitrychabanenko
- * Date: 6/23/14
- * Time: 7:20 PM
- */
+
+namespace Model;
 
 class NewsRecord {
 
@@ -17,6 +13,8 @@ class NewsRecord {
     protected $source;
 
     protected $pubdate;
+
+    protected $hash;
 
     /**
      * @return mixed
@@ -98,5 +96,19 @@ class NewsRecord {
         $this->title = $title;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
 
-} 
+    /**
+     * @param mixed $hash
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
+    }
+}

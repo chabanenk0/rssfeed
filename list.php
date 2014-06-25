@@ -6,7 +6,7 @@
  * Time: 5:05 PM
  */
 
-require_once "config.php";
+require "Core/config.php";
 require_once "NewsRecord.php";
 
 
