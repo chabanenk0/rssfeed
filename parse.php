@@ -13,30 +13,10 @@ $urlExists = $r->fetchAll(PDO::FETCH_COLUMN, 0);
 $newUrls = array_diff($urlsArray, $urlExists);
 
 if (count($newUrls)) {
-    $query = 'insert into feeds (url) values ';
-    foreach ($newUrls as $url) {
-        if (strlen($url)>0) $query = $query."('$url'),";
-    }
-    $query = substr($query,0, strlen($query)-1);
+    $query = 'insert into feeds (url) values (\'';
+    $query = $query . implode('\',\'', $newUrls) . '\')';
     $db->query($query);
 }
-
-//$fp = fopen ('feeds.txt', 'r');
-//if (!$fp) {
-//    die('Unable to open feeds.txt');
-//}
-//
-//while (!feof($fp)) {
-//    $s = fgets($fp);
-//    if (strlen($s)<1) continue;
-//    $s = substr($s, 0, strlen($s)-1); //erase enter;
-//    $r = $db->query("select id from feeds where url='$s'");
-//
-//    if ($r->rowCount() == 0) { //url is new
-//        $q = "insert into feeds (url) values ('$s')";
-//        $db->query($q);
-//    }
-//}
 
 echo "<p>updated feeds list</p>";
 // requesting url's
