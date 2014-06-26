@@ -27,12 +27,12 @@ $controllerName = ucfirst($controllerName);
 $controllerName = '\\Controller\\'.$controllerName.'Controller';
 $actionName = strtolower($actionName);
 
-try {
+if (class_exists($controllerName, true)) {
     $controller = new $controllerName($mysqlServer, $mysqlDatabaseName, $mysqlUser, $mysqlPass, $paginationLimit);
     $actionName = $actionName.'Action';
     $controller->$actionName($url);
     exit;
-}
-catch (Exception $e) {
+} else {
+    header('HTTP/1.1 404 Not Found');
     echo "404 not found";
 }

@@ -7,21 +7,7 @@
 <body>
 <h1>Список свежеспарсенных новостей</h1>
 <?php
-    for ($i = $minPageNumber; $i <= $maxPageNumber; $i++) {
-        echo "<a href='?page=$i'>$i</a>\n";
-    }
-    echo "<p>";
-    if ($pageNumber > 0) {
-        echo '<a href=?page='. ($pageNumber) .'>&lt;--Туда</a> ';
-    } else {
-        echo '&lt;--Туда ';
-    }
-
-    if ($pageNumber < $maxPossiblePage - 1) {
-        echo '<a href=?page='. ($pageNumber+2) .'>Сюда--&gt;</a> ';
-    } else {
-        echo 'Сюда--&gt; ';
-    }
+    include "paginator_template.php";
 ?>
 <ul>
     <?php
@@ -33,6 +19,7 @@
         <?php
         }
         ?>
+</ul>
 </table>
 </body>
 </html>

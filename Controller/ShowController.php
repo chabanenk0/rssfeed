@@ -6,24 +6,11 @@ use Core\FeedsDatabaseClient;
 use Core\NewsDatabaseClient;
 use Model\NewsRecord;
 
-class ShowController
+class ShowController extends BaseController
 {
-    //FeedsDatabaseClient
-    protected $fc;
-
-    //NewsDatabaseClient
-    protected $nc;
-
     protected $where='';
 
     protected $paginationLimit = 10;
-
-    public function __construct($mysqlServer, $mysqlDatabaseName, $mysqlUser, $mysqlPass, $paginationLimit)
-    {
-        $this->fc = new FeedsDatabaseClient($mysqlServer, $mysqlDatabaseName, $mysqlUser, $mysqlPass);
-        $this->nc = new NewsDatabaseClient ($mysqlServer, $mysqlDatabaseName, $mysqlUser, $mysqlPass);
-        $this->paginationLimit = $paginationLimit;
-    }
 
     private function getCurrentPageNumber()
     {

@@ -8,20 +8,8 @@ use Core\NewsDatabaseClient;
 use Core\Parser;
 
 
-class UpdateController
+class UpdateController extends BaseController
 {
-    //FeedsDatabaseClient
-    protected $fc;
-
-    //NewsDatabaseClient
-    protected $nc;
-
-    public function __construct($mysqlServer, $mysqlDatabaseName, $mysqlUser, $mysqlPass)
-    {
-        $this->fc = new FeedsDatabaseClient($mysqlServer, $mysqlDatabaseName, $mysqlUser, $mysqlPass);
-        $this->nc = new NewsDatabaseClient ($mysqlServer, $mysqlDatabaseName, $mysqlUser, $mysqlPass);
-    }
-
     public function updateAction()
     {
         $parser = new Parser($this->fc, $this->nc);
